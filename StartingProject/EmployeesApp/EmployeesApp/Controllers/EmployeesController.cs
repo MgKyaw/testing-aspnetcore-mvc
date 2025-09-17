@@ -1,17 +1,20 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using EmployeesApp.Contracts;
 using EmployeesApp.Models;
-using EmployeesApp.Contracts;
+using EmployeesApp.Validation;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace EmployeesApp.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly IEmployeeRepository _repo;
+        private readonly AccountNumberValidation _validation;
 
         public EmployeesController(IEmployeeRepository repo)
         {
             _repo = repo;
+            _validation = new AccountNumberValidation();
         }
 
         public IActionResult Index()
@@ -29,8 +32,14 @@ namespace EmployeesApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Name,AccountNumber,Age")] Employee employee)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                return View(employee);
+            }
+
+            if (!_validation.IsValid(employee.AccountNumber))
+            {
+                ModelState.AddModelError("AccountNumber", "Account Number is invalid");
                 return View(employee);
             }
 
