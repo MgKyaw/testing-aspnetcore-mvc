@@ -1,4 +1,6 @@
-﻿namespace EmployeesApp.Tests.Validation;
+﻿using EmployeesApp.Validation;
+
+namespace EmployeesApp.Tests.Validation;
 
 public class AccountNumberValidationTests
 {
