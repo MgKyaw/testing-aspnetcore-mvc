@@ -29,4 +29,11 @@ public class AccountNumberValidationTests
     [InlineData("123-3454565676-233")]
     public void IsValid_AccountNumberLastPartWrong_ReturnsFalse(string accNumber)
         => Assert.False(_validation.IsValid(accNumber));
+
+    [Theory]
+    [InlineData("123-345456567633=23")]
+    [InlineData("123+345456567633-23")]
+    [InlineData("123+345456567633=23")]
+    public void IsValid_InvalidDelimiters_ThrowsArgumentException(string accNumber)
+    => Assert.Throws<ArgumentException>(() => _validation.IsValid(accNumber));
 }
