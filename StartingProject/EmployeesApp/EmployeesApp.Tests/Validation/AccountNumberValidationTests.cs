@@ -12,7 +12,9 @@ public class AccountNumberValidationTests
     public void IsValid_ValidAccountNumber_ReturnsTrue()
         => Assert.True(_validation.IsValid("123-4543234576-23"));
 
-    [Fact]
-    public void IsValid_AccountNumberFirstPartWrong_ReturnsFalse()
-    => Assert.False(_validation.IsValid("1234-3454565676-23"));
+    [Theory]
+    [InlineData("1234-3454565676-23")]
+    [InlineData("12-3454565676-23")]
+    public void IsValid_AccountNumberFirstPartWrong_ReturnsFalse(string accountNumber)
+    => Assert.False(_validation.IsValid(accountNumber));
 }
